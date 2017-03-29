@@ -1,0 +1,177 @@
+<?php
+//Credentials and the status details
+$token  = Mage::getStoreConfig('pirates_options/pirates_group/pirates_inputToken',Mage::app()->getStore());
+$key =  Mage::getStoreConfig('pirates_options/pirates_group/pirates_inputSecret',Mage::app()->getStore());
+$board_id = Mage::getStoreConfig('pirates_options/pirates_group/pirates_inputBoard',Mage::app()->getStore());
+$status = Mage::getStoreConfig('pirates_options/pirates_group/pirates_select',Mage::app()->getStore());
+
+?>
+
+<?php
+// get card details and member details through api
+$board_list = json_decode(file_get_contents('https://trello.com/1/boards/'.$board_id.'/lists?key='.$key.'&token='.$token));
+$members_list =json_decode(file_get_contents('https://api.trello.com/1/boards/'.$board_id.'/members?key='.$key.'&token='.$token));
+?>
+<style>
+ .btn_report{
+     border-radius: 9px;
+     position: fixed;
+     right: 1%;
+     bottom: 4%;
+ }
+</style>
+<?php if($status == 1){ ?>
+<button class="btn btn-primary btn-xs btn_report" data-toggle="modal" data-target="#myModalNorm" id="issue_pic">Report Issue</button>
+<?php } ?>
+
+<!-- Popup for report -->
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Add Issue
+                </h4>
+            </div>
+
+
+            <div class="modal-body">
+
+                <form role="form" action="" method="post" id="issue_form">
+                    <div class="form-group">
+                        <label for="sel1">Card list:</label>
+                        <select class="form-control" id="list_id">
+                            <?php foreach($board_list as $item){  ?>
+                            <option value="<?php echo $item->id;  ?>"><?php echo $item->name;  ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Issue Name</label>
+                        <input type="text" class="form-control" id="issuename" placeholder="Issue name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Description:</label>
+                        <textarea class="form-control" rows="3" id="comment"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="sel1">Assignee:</label>
+                        <select class="form-control" id="members" multiple>
+                            <?php foreach($members_list as $item){  ?>
+                                <option value="<?php echo $item->id;  ?>"><?php echo $item->fullName;  ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label for="InputFile">--><?php //echo $this->__('Attach a File (Like : jpg,png)') ?><!--</label>-->
+<!--                        <input type="file" id="InputFile reason_file" class="" name="reason_file">-->
+<!--                    </div>-->
+                    <button type="button" class="btn btn-default" id="" onclick="upload()">Submit</button>
+                </form>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="closing">Close</button>
+<!--                <button type="submit" class="btn btn-default" id="submit">Submit</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+//    jQuery(document).ready(function() {
+        var blob;
+        jQuery("#issue_pic").click(function() {
+
+            jQuery('.element').css('position', 'initial'); // Change absolute to initial
+            var my_view = jQuery('body');
+            var useHeight = jQuery('body').prop('scrollHeight');
+            html2canvas('body', {
+                height: useHeight,
+                useCORS: true,
+                allowTaint: true,
+                proxy: "your proxy url",
+                onrendered: function(canvas) {
+                    var imgSrc = canvas.toDataURL();
+//                    alert(imgSrc);
+                   blob = dataURLtoBlob(imgSrc);
+//                    alert("iujhrge");
+                }
+            });
+        });
+        function dataURLtoBlob(dataurl) {
+            var arr = dataurl.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]),
+                n = bstr.length,
+                u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], {
+                type: mime
+            });
+        }
+
+
+//    });
+
+
+    function upload_picture(blob) {
+        var TOKEN = "<?php echo $token; ?>";
+        var KEY = "<?php echo $key; ?>";
+//        var LIST_ID = "58d4d4be02358f8ccc87d15e";
+        var CARD = "58d4e0684ea162d0c2ab913e";
+        var formData = new FormData();
+        formData.append("token", TOKEN);
+        formData.append("key", KEY);
+        // HTML file input, chosen by user
+        formData.append("file",blob,"filename.png");
+        var request = new XMLHttpRequest();
+        request.open("POST", "https://api.trello.com/1/cards/" + CARD + "/attachments");
+        request.send(formData);
+    }
+    //function for uplaoding the issues to trello
+    function upload() {
+        var LIST_ID = jQuery('#list_id').find(":selected").val();
+//        alert(LIST_ID);
+        var issue_name = jQuery('#issuename').val();
+        var pageURL = "page url "+jQuery(location).attr("href");
+        var comment = pageURL+jQuery('#comment').val();
+
+        var foo = [];
+        jQuery('#members :selected').each(function(i, selected){
+            foo[i] = jQuery(selected).val();
+        });
+
+        var assign = foo.join(',');
+//        console.log(assign);
+        var TOKEN = "<?php echo $token; ?>";
+        var KEY = "<?php echo $key; ?>";
+//        var LIST_ID = "58d4d4be02358f8ccc87d15e";
+        var formData = new FormData();
+        formData.append("token", TOKEN);
+        formData.append("key", KEY);
+
+        var request = new XMLHttpRequest();
+        request.open("POST", "https://api.trello.com/1/lists/"+LIST_ID+"/cards?name="+encodeURIComponent(issue_name)+"&desc="+encodeURIComponent(comment)+"&idMembers="+assign+"&key="+KEY+"&token="+TOKEN);
+        var response=request.send(formData);
+//        console.log(response);
+
+
+        upload_picture(blob);
+        document.getElementById('closing').click();
+        alert('Issue Has Been Reported');
+    }
+
+</script>

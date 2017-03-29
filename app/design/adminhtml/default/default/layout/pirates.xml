@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <hackthon_pirates_adminhtml_pirates_index>
+        <reference name="content">
+            <block type="hackthon_pirates/adminhtml_board" name="board" />
+        </reference>
+    </hackthon_pirates_adminhtml_pirates_index>
+</layout>

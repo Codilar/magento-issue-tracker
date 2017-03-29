@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <codilar translate="label" module="hackthon_pirates">
+            <label>APi Keys</label>
+            <sort_order>1</sort_order>
+        </codilar>
+    </tabs>
+    <sections>
+        <pirates_options translate="label" module="hackthon_pirates">
+            <label>Pirates</label>
+            <tab>codilar</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <pirates_group translate="label" module="hackthon_pirates">
+                    <label>Pirates</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+
+                    <fields>
+
+                        <pirates_select translate="label">
+                            <label>Enable Issue tracker</label>
+                            <comment>Source model provider Magento's default Yes/No values</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </pirates_select>
+
+                        <pirates_inputBoard translate="label">
+                            <label>Board Id</label>
+                            <comment>Board ID</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pirates_inputBoard>
+
+                        <pirates_inputSecret>
+                            <label>Secret Key</label>
+                            <comment>Your trello secret key</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pirates_inputSecret>
+
+                        <pirates_inputID>
+                            <label>User ID</label>
+                            <comment>Your trello User ID</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pirates_inputID>
+
+                        <pirates_inputToken>
+                            <label>Token</label>
+                            <comment>Your Token</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pirates_inputToken>
+                    </fields>
+                </pirates_group>
+            </groups>
+        </pirates_options>
+    </sections>
+</config>

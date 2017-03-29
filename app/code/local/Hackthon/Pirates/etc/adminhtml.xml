@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <menu>
+        <hackthon_pirates module="hackthon_pirates">
+            <title>Tello</title>
+            <sort_order>71</sort_order>              
+            <children>
+                <items module="hackthon_pirates">
+                    <title>Create Board</title>
+                    <sort_order>0</sort_order>
+                    <action>hackthon_pirates/adminhtml_board</action>
+                </items>
+            </children>
+        </hackthon_pirates>
+    </menu>
+    <layout>
+        <updates>
+            <hackthon_pirates>
+                <file>pirates.xml</file>
+            </hackthon_pirates>
+        </updates>
+    </layout>
+</config>

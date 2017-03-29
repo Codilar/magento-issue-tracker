@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Hackthon_Pirates>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Hackthon_Pirates>
+    </modules>
+</config>
